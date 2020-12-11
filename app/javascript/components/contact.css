@@ -211,6 +211,7 @@ iframe {
 [ Contact more ]*/
 .contact100-more {
   width: 50%;
+  background: url("../assets/bg-01.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -518,6 +519,12 @@ textarea.input100 {
     opacity: 1;
   }
 }
+
+/* .main-background-image{
+  
+  background-size: contain;
+  background-repeat: no-repeat;
+} */
 
 
 
