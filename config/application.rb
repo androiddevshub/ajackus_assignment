@@ -13,6 +13,9 @@ module AjackusAssignment
     config.paths.add File.join('app', 'api'), glob: File.join('**', '*.rb')
     config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
 
+    config.exceptions_app = ->(env) { ExceptionController.action(:show).call(env) }
+    # config.action_dispatch.rescue_responses["BadTaste"] = :bad_request
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
