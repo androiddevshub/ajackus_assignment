@@ -7,6 +7,15 @@
 
 import Vue from 'vue'
 import App from '../app.vue'
+import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
+
+Vue.use(BootstrapVue)
+Vue.use(BootstrapVueIcons)
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
+Vue.use(ElementUI);
+
 
 document.addEventListener('DOMContentLoaded', () => {
   const app = new Vue({
