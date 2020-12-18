@@ -13,6 +13,11 @@ application up and running.
 5. `rails s` to run server.
 6. open localhost:3000 in the browser to access the running application.
 
+# Setup
+
+1. run test cases using command `bundle exec rspec`
+2. If looking for coverage folder then open it using `open coverage/index.html` (If using terminal)
+
 
 
 # Issues
