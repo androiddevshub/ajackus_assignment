@@ -4,13 +4,18 @@ class Contacts < Api
 
 	namespace :contacts, desc: 'Bags related CRUD operations' do
 
+    desc 'A test end-point'
+    get '/test' do
+      { status_code: true,  message: 'Test api response successful' }
+		end
+
 		desc 'Get all Contacts'
     get '/' do
       @contacts = Contact.all
       if @contacts
-        { data: @contacts, status: true }
+        { data: @contacts, status_code: true }
       else
-        error!({ status: false, message: 'Contact list is empty' }, 400)
+        error!({ status_codes: false, message: 'Contact list is empty' }, 400)
       end
 		end
 
@@ -25,7 +30,7 @@ class Contacts < Api
     post '/' do
       @contact = Contact.new(params)
       if @contact.save!
-        { data: @contact, message: 'Contact was successfully added.', status: true}
+        { data: @contact, message: 'Contact was successfully added.', status_code: true}
       else
         error!({ status: false, message: @contact.errors.full_messages.join(', ') }, 400)
       end
