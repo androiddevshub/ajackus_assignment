@@ -14,7 +14,9 @@
     "turbolinks": "^5.2.0",
     "vue": "^2.6.12",
     "vue-loader": "^15.9.5",
+    "vue-loading-overlay": "^3.4.2",
     "vue-template-compiler": "^2.6.12",
+    "vuejs-localization": "^1.0.3",
     "vuex": "^2.0.0"
   },
   "version": "0.1.0",
