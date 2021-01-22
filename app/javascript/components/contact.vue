@@ -1,42 +1,51 @@
 <template>
    <div class="container-contact100">
+     <select v-model="selectedLanguage" @change="changeLanguage(selectedLanguage)" class="language-select">
+         <option disabled value="">Please select one</option>
+         <option v-for="item in languageList" :key="item.id" :value="item.id">{{item.name}}</option>
+     </select>
+    <loading :active.sync="isLoading" 
+      :can-cancel="true"
+      loader="bars"
+      :is-full-page="fullPage">
+    </loading> 
 		<div class="wrap-contact100">
 			<div class="contact100-form validate-form">
 				<span class="contact100-form-title">
-					Send Us A Message
+					{{$lang.form.form_message}}
 				</span>
 
-				<label class="label-input100" for="first-name">Tell us your name *</label>
-				<div class="wrap-input100 rs1-wrap-input100 validate-input"  data-validate="Type first name">
-					<input ref="first-name" v-model="firstName" class="input100" @click="hideValidate('first-name')" type="text" placeholder="First name">
+				<label class="label-input100" for="first-name">{{$lang.form.name}} *</label>
+				<div class="wrap-input100 rs1-wrap-input100 validate-input"  :data-validate="$lang.form.first_name_error">
+					<input ref="first-name" v-model="firstName" class="input100" @click="hideValidate('first-name')" type="text" :placeholder="$lang.form.first_name_placeholder">
 					<span class="focus-input100"></span>
 				</div>
-				<div class="wrap-input100 rs2-wrap-input100 validate-input" data-validate="Type last name">
-					<input ref="last-name" class="input100" v-model="lastName" @click="hideValidate('last-name')" type="text" placeholder="Last name">
-					<span class="focus-input100"></span>
-				</div>
-
-				<label class="label-input100" for="email">Enter your email *</label>
-				<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-					<input ref="email" class="input100" v-model="email" @click="hideValidate('email')" type="text" placeholder="Eg. example@email.com">
+				<div class="wrap-input100 rs2-wrap-input100 validate-input" :data-validate="$lang.form.last_name_error">
+					<input ref="last-name" class="input100" v-model="lastName" @click="hideValidate('last-name')" type="text" :placeholder="$lang.form.last_name_placeholder">
 					<span class="focus-input100"></span>
 				</div>
 
-				<label class="label-input100" for="phone">Enter phone number</label>
-				<div class="wrap-input100">
-					<input ref="phone"  class="input100" v-model="phone" type="text" @click="hideValidate('phone')" placeholder="Eg. +1 800 000000">
+				<label class="label-input100" for="email">{{$lang.form.email}} *</label>
+				<div class="wrap-input100 validate-input" :data-validate="$lang.form.email_error">
+					<input ref="email" class="input100" v-model="email" @click="hideValidate('email')" type="text" :placeholder="$lang.form.email_placeholder">
 					<span class="focus-input100"></span>
 				</div>
 
-				<label class="label-input100" for="message">Message *</label>
-				<div class="wrap-input100 validate-input" data-validate = "Message is required">
-					<textarea ref="message" class="input100" @click="hideValidate('message')" v-model="message" placeholder="Write us a message"></textarea>
+				<label class="label-input100" for="phone">{{$lang.form.phone}} *</label>
+				<div class="wrap-input100" :data-validate="phone_error ? $lang.form.phone_error2 : $lang.form.phone_error1">
+					<input ref="phone"  class="input100" v-model="phone" type="text" @click="hideValidate('phone')" :placeholder="$lang.form.phone_placeholder">
+					<span class="focus-input100"></span>
+				</div>
+
+				<label class="label-input100" for="message">{{$lang.form.message}} *</label>
+				<div class="wrap-input100 validate-input" :data-validate="$lang.form.message_error">
+					<textarea ref="message" class="input100" @click="hideValidate('message')" v-model="message" :placeholder="$lang.form.message_placeholder"></textarea>
 					<span class="focus-input100"></span>
 				</div>
 
 				<div class="container-contact100-form-btn">
 					<button @click="submitForm()" class="contact100-form-btn">
-						Send Message
+						{{$lang.form.send}}
 					</button>
 				</div>
 			</div>
@@ -51,11 +60,11 @@
 
 					<div class="flex-col size2">
 						<span class="txt1 p-b-20">
-							Address
+							{{$lang.form.address_txt}}
 						</span>
 
 						<span class="txt2">
-							Mada Center 8th floor, 379 Hudson St, New York, NY 10018 US
+							{{$lang.form.address}}
 						</span>
 					</div>
 				</div>
@@ -69,7 +78,7 @@
 
 					<div class="flex-col size2">
 						<span class="txt1 p-b-20">
-							Lets Talk
+							{{$lang.form.lets_talk}}
 						</span>
 
 						<span class="txt3">
@@ -87,11 +96,11 @@
 
 					<div class="flex-col size2">
 						<span class="txt1 p-b-20">
-							General Support
+							{{$lang.form.support}}
 						</span>
 
 						<span class="txt3">
-							contact@example.com
+							contact@ajackus.com
 						</span>
 					</div>
 				</div>
@@ -101,16 +110,40 @@
 </template>
 
 <script>
+import Loading from 'vue-loading-overlay';
+  // Import stylesheet
+  import 'vue-loading-overlay/dist/vue-loading.css';
 import axios from 'axios'
 export default {
   name: "contact",
+  components: {
+      Loading
+  },
   data(){
     return{
+      languageList: [
+        {
+          name: "English",
+          id: 1
+        },
+        {
+          name: "French",
+          id: 2
+        },
+        {
+          name: "Spanish",
+          id: 3
+        }
+      ],
+      selectedLanguage: 1,
+      isLoading: false,
+      fullPage: true,
       validForm: null,
       firstName: null,
       lastName: null,
       email: null,
       phone: null,
+      phone_error: false, 
       message: null,
       baseUrl: 'http://localhost:3000',
       phoneRegex: /^\d+$/,
@@ -118,12 +151,34 @@ export default {
     }
   },
   created(){
-
+    // this.$lang.setLang('es')
   },
   methods: {
+    changeLanguage(language_id){
+      // if (language_id === 1){
+
+      // }
+      // if (language_id === 1){
+
+      // }
+      // if (language_id === 1){
+
+      // }
+      switch (language_id) {
+        case 1:
+          this.$lang.setLang('en')
+          break;
+        case 2:
+          this.$lang.setLang('fr')
+          break;
+        case 3:
+          this.$lang.setLang('es')
+      }
+    },
     submitForm(){
 
       this.validForm = true
+      this.phone_error = false
       console.log(this.firstName, 'firstname')
       if(this.firstName === null || this.firstName === ""){
         this.validForm = false
@@ -136,27 +191,41 @@ export default {
         this.validForm = false
         this.showValidate("email")
       }
+      if(this.phone === null || this.phone === "" || !(this.phoneRegex.test(this.phone))){
+        this.validForm = false
+        this.showValidate("phone")
+      }
+      else if(this.phone.length > 15){
+        this.validForm = false
+        this.phone_error = true
+        this.showValidate("phone")
+      }
       if(this.message === null || this.message === ""){
         this.validForm = false
         this.showValidate("message")
       }
       console.log(this.validForm, "valid form")
       if(this.validForm){
+        this.isLoading = true;
         return axios
         .post(`${this.baseUrl}/api/contacts`,{
-          first_name: this.firstName,
-          last_name: this.lastName,
-          email: this.email,
-          phone: this.phone,
-          message: this.message
+          user: {
+            first_name: this.firstName,
+            last_name: this.lastName,
+            email: this.email,
+            phone: this.phone,
+            message: this.message,
+            test_param: "test param"
+          }
         })
         .then(response => {
-          if (response.data.status){
+          if (response.data.status_code){
             this.firstName = null
             this.lastName = null
             this.email = null
             this.phone = null
             this.message = null
+            this.isLoading = false;
             this.$notify({
               title: 'Success',
               message: 'We have received you message, kindly wait for the response',
