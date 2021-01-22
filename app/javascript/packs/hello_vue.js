@@ -15,6 +15,12 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
 Vue.use(ElementUI);
+var Lang = require('vuejs-localization');
+ 
+//Notice that you need to specify the lang folder, in this case './lang'
+Lang.requireAll(require.context('./../lang', true, /\.js$/));
+ 
+Vue.use(Lang);
 
 
 document.addEventListener('DOMContentLoaded', () => {
