@@ -20,6 +20,8 @@ ActiveRecord::Schema.define(version: 2020_12_11_113724) do
     t.string "message"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_contacts_on_email", unique: true
+    t.index ["phone"], name: "index_contacts_on_phone", unique: true
   end
 
 end

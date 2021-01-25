@@ -37,11 +37,17 @@ class Contacts < Api
       
     end
     post '/' do
-      @contact = Contact.new(contact_params[:user])
-      if @contact.save! && @contact.send_mail
-        { data: @contact, message: 'Contact was successfully added.', status_code: true}
+      @contact = Contact.find_by(email: contact_params[:user][:email], phone: contact_params[:user][:phone])
+      if @contact.present? 
+        error!({ status_code: false, message: "You have already made an inquiry, we will respond you back shortly." }, 400)
+        #  
+        
       else
-        error!({ status_code: false, message: @contact.errors.full_messages.join(', ') }, 400)
+        @contact = Contact.new(contact_params[:user])
+        if @contact.save 
+          # && @contact.send_mail
+          { data: @contact, message: 'Contact was successfully added.', status_code: true}
+        end
       end
     end
     

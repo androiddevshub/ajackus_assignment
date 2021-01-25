@@ -235,9 +235,11 @@ export default {
           }
         })
         .catch(e => {
+          this.isLoading = false;
+          console.log(e.response.data)
           this.$notify.error({
             title: 'Error',
-            message: 'Something went wrong',
+            message: e.response.data.message,
             offset: 100
           });
           
